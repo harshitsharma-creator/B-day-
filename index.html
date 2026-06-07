@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiran Birthday Inspection Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Inter,Arial,sans-serif;
+background:linear-gradient(135deg,#ffb6d9,#ff78b8,#ff9fd0);
+color:white;
+overflow-x:hidden;
+}
+.screen,.section{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+.card{
+max-width:800px;
+width:100%;
+background:rgba(255,255,255,.25);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.35);
+border-radius:24px;
+padding:32px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+.hidden{display:none}
+h1{margin-bottom:20px}
+ul{list-style:none;margin-top:20px}
+li{padding:8px 0}
+button{
+margin-top:24px;
+padding:14px 24px;
+border:none;
+border-radius:999px;
+cursor:pointer;
+font-size:16px;
+font-weight:700;
+background:white;
+color:#ff4fa3;
+}
+.review{
+background:rgba(255,255,255,.15);
+padding:16px;
+border-radius:14px;
+margin:12px 0;
+text-align:left;
+}
+#progress{margin-top:20px;height:12px;background:rgba(255,255,255,.3);border-radius:999px;overflow:hidden}
+#bar{height:100%;width:0%;background:white;transition:width .8s}
+canvas{position:fixed;inset:0;pointer-events:none}
+.footer{margin-top:20px;opacity:.4;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="screen" id="loading">
+<div class="card">
+<h1>🎂 Birthday Inspection System</h1>
+<p id="status">Initializing...</p>
+<div id="progress"><div id="bar"></div></div>
+</div>
+</div>
+
+<section class="section hidden" id="s1">
+<div class="card">
+<h1>Birthday Quality Assurance Check</h1>
+<p><b>Subject:</b> Kiran</p>
+<p><b>Inspection Date:</b> Today</p>
+<ul>
+<li>✅ Survived another trip around the sun</li>
+<li>✅ Still managing to be everyone's favourite inconvenience</li>
+<li>✅ Still somehow cooler than most people</li>
+<li>⚠️ Ageing? Technically.</li>
+<li>⚠️ Acting older? Evidence inconclusive.</li>
+</ul>
+<h3 style="margin-top:20px">STATUS: APPROVED FOR ANOTHER YEAR</h3>
+<button onclick="nextPage('s2')">Continue Inspection →</button>
+</div>
+</section>
+
+<section class="section hidden" id="s2">
+<div class="card">
+<h1>📜 Historical Findings</h1>
+<p>Things that existed before Kiran became operational:</p>
+<ul>
+<li>📼 DVD Players</li>
+<li>🦖 Windows XP</li>
+<li>🎮 PlayStation 2</li>
+<li>📞 Nokia 3310</li>
+<li>📡 Bluetooth</li>
+<li>👑 Shrek</li>
+<li>📧 Hotmail</li>
+<li>👴 ME</li>
+</ul>
+<p style="margin-top:20px">Conclusion: Officially younger than all of the above.</p>
+<button onclick="nextPage('s3')">Continue →</button>
+</div>
+</section>
+
+<section class="section hidden" id="s3">
+<div class="card">
+<h1>⭐ Public Reviews</h1>
+<div class="review">⭐⭐⭐⭐⭐<br><br>"Very funny. Occasionally unhinged."<br>— Sources familiar with the matter</div>
+<div class="review">⭐⭐⭐⭐⭐<br><br>"Would recommend as a human."<br>— Independent auditors</div>
+<div class="review">⭐⭐⭐⭐⭐<br><br>"Refuses to stop being likeable."<br>— Ongoing investigation</div>
+<div class="review">⭐⭐⭐⭐⭐<br><br>"Would absolutely help you hide a body. No further questions."<br>— Product Safety Department</div>
+<button onclick="nextPage('s4')">Continue →</button>
+</div>
+</section>
+
+<section class="section hidden" id="s4">
+<div class="card">
+<h1>🏆 Achievement Unlocked</h1>
+<ul>
+<li>🎖️ Made it through another year</li>
+<li>🎖️ Answered texts eventually</li>
+<li>🎖️ Survived bad days</li>
+<li>🎖️ Collected new lore</li>
+<li>🎖️ Continued being a menace</li>
+</ul>
+<button onclick="nextPage('s5')">Final Report →</button>
+</div>
+</section>
+
+<section class="section hidden" id="s5">
+<div class="card">
+<h1>🎉 Final Report</h1>
+<p>
+Happy Birthday, <b>Kiran</b>.<br><br>
+I know this website is ridiculous, but I hope your birthday is genuinely great.<br><br>
+You deserve good food, good people, good memories, and at least one day where nobody annoys you.<br><br>
+That last one might be difficult.
+</p>
+<button onclick="gift()">Click For Your Gift 🎁</button>
+<div id="giftBox" class="hidden" style="margin-top:20px">
+<h2>🎁 Congratulations.</h2>
+<p>
+✨ 1 Premium Birthday Wish<br><br>
+✨ Unlimited Bragging Rights<br><br>
+✨ Official Permission To Be The Main Character Today<br><br>
+Valid Until: Tomorrow<br><br>
+Terms & Conditions: You are legally required to enjoy your birthday.
+</p>
+</div>
+<div class="footer" onclick="easter()">Version 20.02-KIRAN</div>
+</div>
+</section>
+
+<script>
+const steps=[
+"Locating birthday recipient...",
+"Checking if recipient is cool...",
+"Results: annoyingly cool",
+"Recipient Found: Kiran",
+"Beginning inspection..."
+];
+let i=0;
+const status=document.getElementById("status");
+const bar=document.getElementById("bar");
+
+const timer=setInterval(()=>{
+bar.style.width=((i+1)/steps.length)*100+"%";
+status.textContent=steps[i];
+i++;
+if(i===steps.length){
+clearInterval(timer);
+setTimeout(()=>{
+document.getElementById("loading").style.display="none";
+document.getElementById("s1").classList.remove("hidden");
+},700);
+}
+},1000);
+
+function nextPage(id){
+document.getElementById(id).classList.remove("hidden");
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+function gift(){
+document.getElementById("giftBox").classList.remove("hidden");
+confetti();
+}
+
+let clicks=0;
+function easter(){
+clicks++;
+if(clicks>=5){
+alert("Developer Note:\n\nHappy Birthday Kiran.\n\nThis website was made with questionable coding practices but good intentions.");
+clicks=0;
+}
+}
+
+function confetti(){
+const c=document.getElementById("confetti");
+const x=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+let p=[...Array(180)].map(()=>({x:Math.random()*c.width,y:-20,r:2+Math.random()*5,v:2+Math.random()*4}));
+let t=0;
+(function a(){
+x.clearRect(0,0,c.width,c.height);
+p.forEach(q=>{q.y+=q.v;x.fillRect(q.x,q.y,q.r,q.r)});
+if(t++<250)requestAnimationFrame(a);
+})();
+}
+</script>
+</body>
+</html>
